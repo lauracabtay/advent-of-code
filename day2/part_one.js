@@ -22,7 +22,7 @@ score = {
     "C Z": scissors + draw
 }
 
-pointsCount = () => {
+countPoints = () => {
     let points = 0;
     for (var i = 0 ; i < lines.length ; i++) {
         points += score[lines[i]];
@@ -31,4 +31,4 @@ pointsCount = () => {
     return points;
 }
 
-pointsCount()
+countPoints();
