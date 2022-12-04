@@ -2,38 +2,32 @@ const fs = require("fs");
 const input = fs.readFileSync("./day2/input.txt").toString();
 let lines = input.split(/\r?\n/);
 
+const gamePoints = {
+    "X": 0,
+    "Y": 3,
+    "Z": 6
+}
+
 itemTable = {
     "A": {
         points: 1,
         defeats: "C",
-        defeatedBy: "B"
+        defeatedBy: "B",
+        ...gamePoints
     },
     "B": {
         points: 2,
         defeats: "A",
-        defeatedBy: "C"
+        defeatedBy: "C",
+        ...gamePoints
 },
     "C": {
         points: 3,
         defeats: "B",
-        defeatedBy: "A"
+        defeatedBy: "A",
+        ...gamePoints
     }
 };
-
-gameTable = {
-    "X": {
-        result: "lose",
-        points: 0
-    },
-    "Y": {
-        result: "draw",
-        points: 3
-    },
-    "Z": {
-        result: "win",
-        points: 6
-    },
-}
 
 let firstLetter = new String;
 let myItem = new String;
@@ -42,12 +36,14 @@ let myPoints = 0;
 countPoints = () => {
     for (var i = 0 ; i < lines.length ; i++) {
         firstLetter = lines[i][0];
-        myPoints += gameTable[lines[i][2]]["points"];
+        secondLetter = lines[i][2];
+
+        myPoints += itemTable[firstLetter][secondLetter];
     
-        if (gameTable[lines[i][2]]["result"] == "lose") {
+        if (secondLetter == "X") {
             myItem = Object.values(itemTable[firstLetter]["defeats"]);
             myPoints += itemTable[myItem]["points"];
-        } else if (gameTable[lines[i][2]]["result"] == "draw") {
+        } else if (secondLetter == "Y") {
             myItem = itemTable[firstLetter];
             myPoints += myItem["points"];
         } else {
