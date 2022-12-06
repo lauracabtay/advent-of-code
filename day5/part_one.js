@@ -1,13 +1,39 @@
 const fs = require("fs");
 let input = fs.readFileSync("./day5/input.txt").toString();
 input = input.replaceAll(/[a-zA-Z]/g, "");
-let lines = input.split(/\r?\n/);
+input = input.split(/\r?\n/);
+
+let grid = fs.readFileSync("./day5/crates.txt").toString();
+grid = grid.replaceAll("[", " ").replaceAll("]", " ")
+grid = grid.split(/\r?\n/);
 
 const arrOfArr = new Array;
+
+transposeGrid = (grid) => {
+    let arrOfStack = new Array;
+    let transposedStack = new Array;
+
+    for (let column = 0 ; column < grid.length ; column++) {
+        arrOfStack.push(grid[column].split(''));
+    }
+
+    for (let index = 1; index < 35 ; index += 4) {
+        let arr = new Array;
+        for (let stack = 0; stack < arrOfStack.length; stack++) {
+            if (arrOfStack[stack][index] != ' ') {
+                arr.push(arrOfStack[stack][index]);
+            }
+        }
+        arr.pop();
+        transposedStack.push(arr);
+    }
+    return transposedStack;
+}
 
 convertInstructions = (input) => {
     let arrOfNum = new Array;
     let inputArr = new Array;
+
     for (let i = 0 ; i < input.length ; i++) {
         inputArr = input[i].split("  ");
         
@@ -18,18 +44,6 @@ convertInstructions = (input) => {
     }
     return arrOfArr;
 }
-
-const crates = [
-    ['Z','V','T','B','J','G','R'],
-    ['L','V','R','J'],
-    ['F','Q','S'],
-    ['G','Q','V','F','L','N','H','Z'],
-    ['W','M','S','C','J','T','Q','R'],
-    ['F','H','C','T','W','S'],
-    ['J','N','F','V','C','Z','D'],
-    ['Q','F','R','W','D','Z','G','L'],
-    ['P','V','W','B','J']
-];
 
 moveContainers = (stack, instructions) => {
     for (let i = 0 ; i < instructions.length ; i++) {
@@ -51,6 +65,7 @@ fetchTopItems = (crates) => {
     return topItems;
 }
 
-convertInstructions(lines);
+const crates = transposeGrid(grid);
+convertInstructions(input);
 moveContainers(crates, arrOfArr);
 fetchTopItems(crates);
